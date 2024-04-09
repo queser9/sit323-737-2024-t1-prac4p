@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-// 加法接口
+// Addition endpoint
 app.post('/api/add', (req, res) => {
   const num1 = parseFloat(req.body.num1);
   const num2 = parseFloat(req.body.num2);
@@ -17,7 +17,7 @@ app.post('/api/add', (req, res) => {
   res.json({ result });
 });
 
-// 减法接口
+// Subtraction endpoint
 app.post('/api/subtract', (req, res) => {
   const num1 = parseFloat(req.body.num1);
   const num2 = parseFloat(req.body.num2);
@@ -30,7 +30,7 @@ app.post('/api/subtract', (req, res) => {
   res.json({ result });
 });
 
-// 乘法接口
+// Multiplication endpoint
 app.post('/api/multiply', (req, res) => {
   const num1 = parseFloat(req.body.num1);
   const num2 = parseFloat(req.body.num2);
@@ -43,7 +43,7 @@ app.post('/api/multiply', (req, res) => {
   res.json({ result });
 });
 
-// 除法接口
+// Division endpoint
 app.post('/api/divide', (req, res) => {
   const num1 = parseFloat(req.body.num1);
   const num2 = parseFloat(req.body.num2);
@@ -60,7 +60,53 @@ app.post('/api/divide', (req, res) => {
   res.json({ result });
 });
 
-// 错误处理中间件
+// Exponentiation endpoint
+app.post('/api/power', (req, res) => {
+  const base = parseFloat(req.body.base);
+  const exponent = parseFloat(req.body.exponent);
+
+  if (isNaN(base) || isNaN(exponent)) {
+    return res.status(400).json({ error: 'Invalid parameters' });
+  }
+
+  const result = Math.pow(base, exponent);
+  res.json({ result });
+});
+
+// Square root endpoint
+app.post('/api/sqrt', (req, res) => {
+  const num = parseFloat(req.body.num);
+
+  if (isNaN(num)) {
+    return res.status(400).json({ error: 'Invalid parameter' });
+  }
+
+  if (num < 0) {
+    return res.status(400).json({ error: 'Negative number' });
+  }
+
+  const result = Math.sqrt(num);
+  res.json({ result });
+});
+
+// Modulo endpoint
+app.post('/api/modulo', (req, res) => {
+  const dividend = parseFloat(req.body.dividend);
+  const divisor = parseFloat(req.body.divisor);
+
+  if (isNaN(dividend) || isNaN(divisor)) {
+    return res.status(400).json({ error: 'Invalid parameters' });
+  }
+
+  if (divisor === 0) {
+    return res.status(400).json({ error: 'Division by zero' });
+  }
+
+  const result = dividend % divisor;
+  res.json({ result });
+});
+
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });
